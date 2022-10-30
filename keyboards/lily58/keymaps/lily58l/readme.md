@@ -1,6 +1,10 @@
 # Lily58L
 <img src="https://keycapsss.com/media/image/21/2b/68/lily58l-split-keyboard-rgb-led-1.jpg" width="400">
 
+***The layout was adapted by me ([ffactory](https://github.com/ffactory-ofcl)).***
+I tried to implement the [bone layout](https://git.neo-layout.org/neo/neo-layout/wiki/Bone) in 50% hardware and 50% software. Designed for use on Mac.
+You need to insert this folder in the `keyboards/lily58/keymaps` folder.
+
 A modified Lily58 pcb, with underglow, per key rgb light and rotary encoder support.
 - SK6812 Mini-E per key led's (58x) for easy soldering
 - 6x SK6812 Mini led's per side for underglow

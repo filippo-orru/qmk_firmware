@@ -42,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  [   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | MOD3 |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
- * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
+ * |------+------+------+------+------+------|  F16  |    |  F17  |------+------+------+------+------+------|
  * |LShift|   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |RShift|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *                   | LGUI | LAlt |LCtrl | / Space /       \ MOD4 \  | RAlt |RCtrl | RAlt |
@@ -54,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,MEH(KC_1), MEH(KC_2),MEH(KC_3),MEH(KC_4),MEH(KC_5),              MEH(KC_6),MEH(KC_7),MEH(KC_8),MEH(KC_9),MEH(KC_0), KC_EQL,
   KC_TAB,   KC_Q,   KC_W,    KC_E,     KC_R,    KC_T,                          KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,
   KC_CAPS,  KC_A,   KC_S,    KC_D,     KC_F,    KC_G,                          KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,  KC_QUOT,
-  KC_LSFT,  KC_Z,   KC_X,    KC_C,     KC_V,    KC_B,  XXXXXXX,      XXXXXXX,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT,
+  KC_LSFT,  KC_Z,   KC_X,    KC_C,     KC_V,    KC_B,  KC_F16,       KC_F17,   KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT,
                       KC_LGUI, KC_LALT, KC_LCTL, KC_SPC,                   MOD4,  KC_LCTL, KC_RCTL, KC_RALT
   ),
 

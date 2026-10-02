@@ -17,12 +17,58 @@ Right encoder: cursor down/up, right/left on LOWER layer
 * Hardware Supported: Pro Micro, or Elite-C
 * Hardware Availability: [Keycapsss.com](https://keycapsss.com)
 
-Make example for this keyboard (after setting up your build environment):
- 
-    make lily58/light:lily58l
+## Personal hardware and configuration
 
-Flashing example for this keyboard:
+- Left half: Elite-C, normally using the `atmel-dfu` bootloader.
+- Right half: Pro Micro, normally using the `caterina` bootloader.
+- Target: `lily58/light`, keymap: `lily58l`.
+- Layers: `_QWERTY`, `_BONE2_4` (navigation/numpad), `_MOUSE_L`.
+- Handedness is stored in each half's EEPROM (`EE_HANDS`).
+- The layout relies on host-side layout customization on macOS. Preserve that configuration too.
 
-    make lily58/light:lily58l:flash
-    
-See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
+## Build without flashing
+
+After setting up QMK's build tools:
+
+```sh
+# Right Pro Micro
+qmk compile -kb lily58/light -km lily58l -e BOOTLOADER=caterina
+# Left Elite-C
+qmk compile -kb lily58/light -km lily58l -e BOOTLOADER=atmel-dfu
+```
+
+Both commands produce `lily58_light_lily58l.hex`. Save each result under a
+controller-specific name before building the other, since it overwrites the same file.
+
+For build-only use on macOS, Docker avoids installing the AVR toolchain:
+
+```sh
+docker run --rm -v "$PWD:/qmk_firmware" -w /qmk_firmware \
+  ghcr.io/qmk/qmk_cli qmk compile -kb lily58/light -km lily58l \
+  -e BOOTLOADER=caterina
+```
+
+Use `BOOTLOADER=atmel-dfu` instead for the left half. Docker on macOS does not
+provide direct access to the keyboard's USB bootloader; use native tools for readback and flashing.
+
+## Backup before flashing
+
+Do not flash or erase either half until its current flash and EEPROM have been
+read back and verified. A fresh build from this repository is not a backup of
+the currently installed firmware.
+
+1. Confirm the bootloader on each controller. Entering it requires the PCB reset button.
+2. Connect each half directly over USB, one at a time. Disconnect USB power before
+   connecting or disconnecting the TRRS cable.
+3. Read flash and EEPROM using native tools (`dfu-programmer` for the Elite-C's
+   usual Atmel DFU bootloader, `avrdude` for the Pro Micro's usual Caterina bootloader).
+   Readback may be blocked by controller protection; never erase to unlock it.
+4. Save separate left/right backups, repeat reads and compare them, and record
+   SHA-256 checksums, controller/bootloader details, and restore instructions.
+5. Keep backups outside the build output and preserve EEPROM handedness when flashing.
+
+The pre-update source is retained on branch `backup/pre-upstream-2026-04-27`.
+It contained a `COLON:` syntax error, so do not assume that source matches the
+working firmware installed on the keyboard.
+
+See the [QMK documentation](https://docs.qmk.fm/) for build setup and flashing guidance.

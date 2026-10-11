@@ -18,7 +18,23 @@
   */
 
 #include QMK_KEYBOARD_H
+#include "eeconfig.h"
+#include "usb_util.h"
 
+// USB is always connected to the left half, even when the dock has no host.
+bool is_keyboard_master_impl(void) {
+    if (!eeconfig_is_enabled()) {
+        eeconfig_init();
+    }
+
+    // Master selection runs before QMK initializes is_keyboard_left().
+    if (eeconfig_read_handedness()) {
+        return true;
+    }
+
+    usb_disconnect();
+    return false;
+}
 
 enum layers {
     _QWERTY,

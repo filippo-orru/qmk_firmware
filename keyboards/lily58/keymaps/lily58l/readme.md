@@ -26,6 +26,33 @@ Right encoder: cursor down/up, right/left on LOWER layer
 - Handedness is stored in each half's EEPROM (`EE_HANDS`).
 - The layout relies on host-side layout customization on macOS. Preserve that configuration too.
 
+## Fixed left USB master
+
+**Always connect the keyboard's USB cable to the left Elite-C half.**
+The right half cannot act as a USB keyboard with this firmware, although its
+bootloader remains available over USB for backups and flashing.
+
+`EE_HANDS` stores left/right identity. This keymap overrides QMK's weak
+`is_keyboard_master_impl()` function to use that identity for master selection:
+left is always master, and right is always slave with USB disabled. It reads
+EEPROM directly because QMK initializes the master role before the cached
+`is_keyboard_left()` value. `MASTER_LEFT`/`MASTER_RIGHT` alone would not force
+the USB master role.
+
+This avoids USB/VBUS detection entirely. The left half keeps USB enabled even
+when the monitor dock supplies power without a laptop connected, so it can
+enumerate when a laptop becomes available. USB detection timeouts and the split
+watchdog are not enabled; neither half periodically resets while waiting for a
+host.
+
+Both halves must have correct EEPROM handedness: left set to left, right set to
+right. Back up flash and EEPROM before flashing both halves with their respective
+bootloader builds, and preserve those handedness flags. Incorrect flags can make
+both halves masters or both slaves.
+
+See [QMK split configuration](https://docs.qmk.fm/features/split_keyboard) for
+handedness and standard USB detection details.
+
 ## Build without flashing
 
 After setting up QMK's build tools:
